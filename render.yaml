@@ -1,0 +1,22 @@
+# Render Blueprint – deploys the Express + Socket.IO API.
+# The database is MongoDB Atlas (free M0): paste its connection string as MONGO_URI in the Render dashboard.
+services:
+  - type: web
+    name: studysphere-api
+    runtime: node
+    rootDir: backend
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        sync: false          # secret – set in dashboard
+      - key: JWT_SECRET
+        generateValue: true  # Render creates a strong random secret
+      - key: JWT_EXPIRES_IN
+        value: 1h
+      - key: CLIENT_URL
+        sync: false          # your Vercel URL, e.g. https://studysphere.vercel.app

@@ -1,0 +1,70 @@
+
+/* Course Display Grid */
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  margin: 1.5rem 0;
+  align-items: stretch;
+}
+
+/* Individual Course Card */
+.course-card {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  min-width: 0;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Course Card Hover Effect */
+.course-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1);
+}
+
+/* Course Card Heading */
+.course-card h2,
+.course-card h3 {
+  color: var(--text-dark);
+  font-size: 1.15rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Course Description */
+.course-card p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Course Card Buttons */
+.course-card .btn {
+  width: 100%;
+  margin-top: 0.75rem;
+}
+
+/* Course Information */
+.course-card small {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* Course Page Responsive Design */
+@media (max-width: 600px) {
+  .course-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .course-card {
+    padding: 1.1rem;
+  }
+}

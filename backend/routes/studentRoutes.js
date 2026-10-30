@@ -1,0 +1,12 @@
+import express from 'express';
+import { getStudents, getStudentById, createStudent, updateStudent, deleteStudent } from '../controllers/studentController.js';
+import { authenticate, requireRoles } from '../middleware/authMiddleware.js';
+const router = express.Router();
+router.use(authenticate, requireRoles('admin'));
+router.get('/', getStudents);
+router.get('/:id', getStudentById);
+router.post('/', createStudent);
+router.put('/:id', updateStudent);
+router.patch('/:id', updateStudent);
+router.delete('/:id', deleteStudent);
+export default router;

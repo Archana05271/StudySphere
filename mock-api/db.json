@@ -1,0 +1,123 @@
+{
+  "students": [
+    {
+      "id": "std-101",
+      "name": "Archana S",
+      "email": "archana@example.com",
+      "role": "student",
+      "enrolledCourses": [
+        "course-1",
+        "course-2"
+      ]
+    }
+  ],
+  "admins": [
+    {
+      "id": "adm-001",
+      "name": "System Admin",
+      "email": "admin@studysphere.com",
+      "role": "admin"
+    }
+  ],
+  "courses": [
+    {
+      "id": "course-1",
+      "title": "Full-Stack Web Development",
+      "category": "Web Development",
+      "instructor": "Dr. Ramesh Kumar",
+      "duration": "8 Weeks",
+      "level": "Intermediate",
+      "thumbnail": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500",
+      "description": "Master modern full-stack web development using Node.js, Express, React, and MongoDB.",
+      "totalModules": 4
+    },
+    {
+      "id": "course-2",
+      "title": "Applied Machine Learning & AI Fundamentals",
+      "category": "Data Science",
+      "instructor": "Prof. S. Anitha",
+      "duration": "10 Weeks",
+      "level": "Advanced",
+      "thumbnail": "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=500",
+      "description": "Learn hands-on supervised learning algorithms, evaluation metrics, and model deployment using Streamlit.",
+      "totalModules": 5
+    }
+  ],
+  "modules": [
+    {
+      "id": "mod-1",
+      "courseId": "course-1",
+      "title": "Module 1: REST API Architecture & Express.js Setup",
+      "duration": "45 mins",
+      "videoUrl": "https://www.w3schools.com/html/mov_bbb.mp4",
+      "completed": true
+    },
+    {
+      "id": "mod-2",
+      "courseId": "course-1",
+      "title": "Module 2: Mongoose Schemas & Database Operations",
+      "duration": "60 mins",
+      "videoUrl": "https://www.w3schools.com/html/mov_bbb.mp4",
+      "completed": false
+    }
+  ],
+  "materials": [
+    {
+      "id": "mat-1",
+      "courseId": "course-1",
+      "title": "Express.js API Starter Guide",
+      "type": "PDF",
+      "fileUrl": "#"
+    },
+    {
+      "id": "mat-2",
+      "courseId": "course-2",
+      "title": "Scikit-Learn Cheat Sheet",
+      "type": "PDF",
+      "fileUrl": "#"
+    }
+  ],
+  "enrollments": [
+    {
+      "id": "enr-1",
+      "studentId": "std-101",
+      "courseId": "course-1",
+      "progressPercentage": 50,
+      "enrolledDate": "2026-08-15"
+    }
+  ],
+  "certificates": [
+    {
+      "id": "cert-101",
+      "studentId": "std-101",
+      "courseId": "course-1",
+      "courseTitle": "Full-Stack Web Development",
+      "issueDate": "2026-09-20",
+      "certificateCode": "SS-CERT-88421"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "notif-1",
+      "recipientRole": "student",
+      "title": "New Track Available",
+      "message": "Applied Machine Learning & AI Fundamentals is now live!",
+      "date": "2026-09-25"
+    },
+    {
+      "id": "notif-2",
+      "recipientRole": "admin",
+      "title": "New Student Enrollment",
+      "message": "Archana S enrolled in Full-Stack Web Development.",
+      "date": "2026-09-26"
+    }
+  ],
+  "feedback": [
+    {
+      "id": "fb-1",
+      "name": "Archana S",
+      "email": "archana@example.com",
+      "message": "The course interface and video player controls are smooth!"
+    }
+  ]
+}

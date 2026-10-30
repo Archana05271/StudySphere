@@ -1,0 +1,104 @@
+
+/* Tablet and Mobile Responsive Styles */
+@media (max-width: 768px) {
+
+  /* Dashboard Layout */
+  .dashboard-wrapper {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .main-content {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  /* Dashboard Header */
+  .content-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  /* Navigation */
+  .site-nav {
+    padding: 0.75rem 1rem;
+  }
+
+  .nav-links {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  /* Course Cards */
+  .course-grid,
+  .card-grid,
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Chat Layout */
+  .chat {
+    grid-template-columns: 1fr;
+  }
+
+  .chat-contacts {
+    max-height: 160px;
+  }
+
+  /* Tables */
+  .table-wrap {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  /* Forms */
+  .admin-form-container,
+  .auth-card {
+    width: 100%;
+    max-width: 100%;
+    padding: 1.25rem;
+  }
+}
+
+/* Small Mobile Screens */
+@media (max-width: 480px) {
+
+  body {
+    font-size: 14px;
+  }
+
+  .main-content {
+    padding: 0.75rem;
+  }
+
+  .nav-links {
+    gap: 0.5rem;
+  }
+
+  .nav-links .btn {
+    width: auto;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .course-card {
+    padding: 1rem;
+  }
+
+  .content-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .chat-form {
+    flex-direction: column;
+  }
+
+  .chat-form button {
+    width: 100%;
+  }
+}
