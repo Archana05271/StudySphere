@@ -1,157 +1,297 @@
-# StudySphere — Student Course Management System
+# Student Course Management and Learning Progress Tracking System
 
-> **Live demo:** _add your Vercel URL here after deployment_  ·  **API:** _add your Render URL here_  ·  **Repo:** _add your GitHub URL_
+## Project Overview
 
-StudySphere is a full-stack learning-management web app. Students register, browse and enroll in courses, track progress, get live notifications and chat in real time. Administrators manage courses and students and send announcements.
+The **Student Course Management and Learning Progress Tracking System** is a full-stack web application designed to streamline academic course enrollment and learning management. The system allows students to create accounts, browse available courses, enroll in courses, access course materials, track their learning progress, and receive updates regarding their courses.
 
-## Problem statement
-Colleges often manage courses, enrollments and student communication across spreadsheets and chat groups. This causes duplicated data, missed announcements and no single view of a student's progress. StudySphere centralises this in one secure, responsive web application with real-time communication.
+The application also provides administrators with tools to manage students, courses, enrollments, and progress reports.
 
-## Target users and requirements
-| User | Needs |
-|---|---|
-| **Student** | Register/login securely · browse & enroll in courses · see progress · receive instant announcements · message classmates/admin · download a completion certificate |
-| **Administrator** | Create/edit/delete courses · view, edit and remove students · see enrollment activity · broadcast announcements |
+This project demonstrates key concepts in Full Stack Web Development, including frontend development, backend APIs, database management, authentication, deployment, and application security.
 
-## Features
-- Registration & login with validation (email, password length, phone) and **bcrypt**-hashed passwords
-- **JWT** authentication, role-based protected routes (student / admin) on both API and UI
-- Course CRUD (admin) · Student CRUD (admin) · enrollment, lesson progress and certificate (student)
-- **Real-time** notifications and 1-to-1 chat with online/offline status (**Socket.IO**)
-- React Context state (auth, courses/enrollments, socket) · loading & error states everywhere
-- Security: helmet, CORS allow-list, rate limiting, input validation + NoSQL-injection sanitising, centralised error handling, request logging (morgan)
-- Responsive UI (mobile / tablet / desktop) · automated API tests · Postman collection
+---
 
-## Tech stack
+## Problem Statement
+
+In many educational institutions, students face challenges such as:
+
+- Finding available courses
+- Registering for courses efficiently
+- Monitoring learning progress
+- Accessing course information in one place
+- Tracking completed and pending modules
+
+Similarly, administrators often encounter difficulties in managing course enrollments and monitoring student performance.
+
+This system addresses these challenges by providing a centralized web-based platform for academic course management and progress tracking.
+
+---
+
+## Project Objectives
+
+- Provide secure student registration and login.
+- Allow students to browse and enroll in available courses.
+- Enable administrators to create and manage courses.
+- Track student learning progress.
+- Generate progress reports.
+- Provide real-time notifications and updates.
+- Maintain secure access to academic data.
+
+---
+
+## User Roles
+
+### Student
+
+Students can:
+
+- Register and log in
+- View their profile
+- Browse available courses
+- Enroll in courses
+- Access course content
+- Track learning progress
+- View course completion percentage
+- Receive notifications
+
+### Administrator
+
+Administrators can:
+
+- Log in securely
+- Add, edit, and delete courses
+- Manage student records
+- Monitor enrollments
+- Generate reports
+- Update course content
+- View analytics dashboards
+
+---
+
+## System Modules
+
+### Module 1: User Authentication
+
+#### Features
+
+- Student Registration
+- Student Login
+- Password Encryption
+- Forgot Password
+- JWT Authentication
+
+#### Database Fields
+
+| Field | Type |
+|--------|------|
+| Student ID | Integer |
+| Name | String |
+| Email | String |
+| Password | Encrypted String |
+| Department | String |
+
+---
+
+### Module 2: Course Management
+
+#### Features
+
+- Add Course
+- Update Course
+- Delete Course
+- View Course Details
+
+#### Course Information
+
+| Field | Description |
+|--------|-------------|
+| Course ID | Unique ID |
+| Course Name | Course Title |
+| Instructor | Faculty Name |
+| Duration | Number of Weeks |
+| Description | Course Information |
+| Category | Programming, AI, Web, etc. |
+
+---
+
+### Module 3: Course Enrollment
+
+#### Features
+
+- Browse Courses
+- Search Courses
+- Enroll in Course
+- View Enrolled Courses
+
+#### Workflow
+
+```
+Student Login
+      ↓
+Browse Courses
+      ↓
+Select Course
+      ↓
+Enroll
+      ↓
+Confirmation
+```
+
+---
+
+### Module 4: Learning Management
+
+#### Features
+
+- View Modules
+- Access Learning Materials
+- Mark Module as Completed
+- Continue Learning
+
+#### Example Course Structure
+
+**Course:** Full Stack Development
+
+Modules:
+
+- HTML
+- CSS
+- JavaScript
+- React
+- Node.js
+- MongoDB
+
+Students complete each module sequentially while their progress is automatically recorded.
+
+---
+
+### Module 5: Progress Tracking
+
+#### Features
+
+- Completion Percentage
+- Course Progress Bar
+- Completed Modules
+- Pending Modules
+
+#### Example
+
+| Course | Progress |
+|---------|----------|
+| Python | 80% |
+| React | 60% |
+| DBMS | 100% |
+
+---
+
+### Module 6: Dashboard
+
+#### Student Dashboard
+
+Displays:
+
+- Total Courses Enrolled
+- Courses Completed
+- Ongoing Courses
+- Progress Statistics
+
+#### Administrator Dashboard
+
+Displays:
+
+- Total Students
+- Total Courses
+- Active Enrollments
+- Completion Reports
+
+---
+
+### Module 7: Notifications
+
+#### Features
+
+- New Course Alerts
+- Enrollment Confirmation
+- Assignment Reminders
+- Completion Certificates
+
+#### Real-Time Communication
+
+- WebSockets
+- Socket.IO
+
+---
+
+## Database Design
+
+### Students Table
+
+| Field |
+|--------|
+| student_id |
+| name |
+| email |
+| password |
+| department |
+
+### Courses Table
+
+| Field |
+|--------|
+| course_id |
+| course_name |
+| instructor |
+| duration |
+| description |
+
+### Enrollment Table
+
+| Field |
+|--------|
+| enrollment_id |
+| student_id |
+| course_id |
+| enrollment_date |
+
+### Progress Table
+
+| Field |
+|--------|
+| progress_id |
+| student_id |
+| course_id |
+| completed_modules |
+| progress_percentage |
+
+---
+
+## Technology Stack
+
 | Layer | Technology |
-|---|---|
-| Frontend | React 18, Vite, React Router 6, Axios, Context API, Socket.IO client |
-| Backend | Node.js (ES modules), Express 4, Socket.IO, JWT, bcryptjs, helmet, express-rate-limit, morgan |
-| Database | MongoDB + Mongoose (local or MongoDB Atlas) |
-| Testing | node:test + supertest + mongodb-memory-server, Postman/newman |
-| Deployment | Vercel (frontend) · Render (backend) · MongoDB Atlas |
+|--------|------------|
+| Frontend | HTML5, CSS3, Bootstrap, JavaScript, React.js |
+| Backend | Node.js, Express.js |
+| Database | MongoDB |
+| Authentication | JWT, bcrypt |
+| Real-Time Communication | Socket.IO |
+| API Testing | Postman |
+| Version Control | Git, GitHub |
+| Deployment | Render / Vercel / Railway |
 
-## Project structure
-```text
-.
-├── backend/
-│   ├── config/            # env validation, DB connection
-│   ├── controllers/       # request handlers (auth, course, student, enrollment, notification, message)
-│   ├── middleware/        # JWT auth + roles, validation, errors, 404
-│   ├── models/            # Mongoose schemas (User, Course, Enrollment, LearningProgress, Notification, Message)
-│   ├── routes/            # REST route definitions
-│   ├── services/          # business logic (auth, notifications, messages)
-│   ├── sockets/           # authenticated Socket.IO server (chat, presence)
-│   ├── scripts/           # createAdmin.js
-│   ├── tests/             # automated API + socket tests
-│   ├── utils/             # sanitize, asyncHandler, httpError
-│   ├── app.js             # Express app (middleware + routes)
-│   └── server.js          # entry point (DB connect + HTTP + sockets)
-├── src/                   # React app
-│   ├── api/               # axios client + service modules + socket client
-│   ├── components/        # Navbar, Footer, layouts, ProtectedRoute, CourseCard, forms, Toast
-│   ├── context/           # AuthContext, CourseContext, SocketContext
-│   ├── pages/             # auth, student, admin, Home, Chat
-│   ├── utils/             # validation.js, ui.js
-│   └── css/               # external stylesheets (responsive)
-├── static-prototype/      # Tasks 2–5: plain HTML/CSS/ES-module JS version
-├── mock-api/              # Task 7: JSON Server mock data
-├── docs/                  # ER diagram, deployment guide, testing guide, Postman collection
-├── render.yaml · vercel.json · .github/workflows/ci.yml
-└── README.md
-```
+---
 
-## Run locally
+## Project Highlights
 
-**Prerequisites:** Node.js 18+ (22 recommended) and MongoDB (local install **or** a free MongoDB Atlas connection string). Git.
+- Secure user authentication using JWT and bcrypt
+- Course browsing and enrollment system
+- Learning progress monitoring
+- Administrator management dashboard
+- Real-time notifications using Socket.IO
+- MongoDB database integration
+- RESTful API architecture
+- Responsive user interface
+- Deployment-ready full-stack application
 
-### 1 — Backend
-```bash
-cd backend
-cp .env.example .env          # Windows: copy .env.example .env
-npm install
-```
-Edit `backend/.env`:
-- `MONGO_URI` – `mongodb://127.0.0.1:27017/studysphere` (local) or your Atlas string
-- `JWT_SECRET` – at least 32 random characters. Generate: `node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"`
-- `ADMIN_EMAIL` / `ADMIN_PASSWORD` (12+ characters) – used once to create the admin
-
-```bash
-npm run create-admin          # creates the administrator account
-npm run dev                   # API on http://localhost:5000
-```
-Check: open http://localhost:5000/api/health → `{"status":"healthy","database":"connected"}`
-
-### 2 — Frontend (new terminal, from the project root)
-```bash
-npm install
-npm run dev                   # http://localhost:3000
-```
-No `.env` is needed locally (defaults point to `localhost:5000`). To change them copy `.env.example` → `.env.local`.
-
-### 3 — Use it
-- Student: http://localhost:3000/auth/register → create account → login
-- Admin: http://localhost:3000/auth/admin-login (the credentials from `.env`)
-- Real-time test: open a second (private) window, register another student, open **Chat** in both.
-
-### Tests
-```bash
-cd backend && npm test                      # 15 API + WebSocket tests (downloads an in-memory MongoDB on first run)
-# or against your own MongoDB:  TEST_MONGO_URI=mongodb://127.0.0.1:27017/studysphere_test npm test
-```
-Postman: import `docs/StudySphere.postman_collection.json` (see `docs/TESTING.md`).
-
-### Optional
-- **Mock API (Task 7)**: `cd mock-api && npm install && cd .. && npm run mock-api` → http://localhost:4000
-- **Static prototype (Tasks 2–5)**: see `static-prototype/README.md`
-
-## API overview
-Base URL `http://localhost:5000/api/v1` (also available under `/api`). Protected routes need `Authorization: Bearer <token>`.
-
-| Method | Endpoint | Access | Purpose |
-|---|---|---|---|
-| GET | `/` , `/api/health` | Public | Server / DB status |
-| POST | `/auth/register` | Public | Register a student |
-| POST | `/auth/login` | Public | Login → JWT |
-| GET / PUT | `/auth/me` | User | Get / update own profile |
-| PATCH | `/auth/me/password` | User | Change password |
-| GET | `/courses`, `/courses/:id` | Public | List / get courses |
-| POST / PUT / PATCH / DELETE | `/courses`, `/courses/:id` | Admin | Course CRUD |
-| GET / POST | `/students` | Admin | List / create students |
-| GET / PUT / PATCH / DELETE | `/students/:id` | Admin | Student CRUD |
-| POST | `/enrollments` | Student | Enroll `{courseId}` |
-| GET | `/enrollments/me` | Student | My enrollments + progress |
-| PATCH | `/enrollments/:courseId/progress` | Student | `{completedLessons}` |
-| DELETE | `/enrollments/:courseId` | Student | Unenroll |
-| GET | `/enrollments` | Admin | All enrollments |
-| GET | `/notifications` | User | My notifications |
-| POST | `/notifications` | Admin | Announcement to all students (live) |
-| PATCH | `/notifications/:id/read`, `/notifications/read-all` | User | Mark read |
-| GET | `/messages/contacts`, `/messages/:userId` | User | Chat contacts / history |
-| POST | `/messages` | User | Send message (REST fallback) |
-
-Socket.IO events (JWT in `auth.token`): `send_message`, `receive_message`, `notification`, `presence`, `typing`, `connection_status`.
-
-Error format: `{ "success": false, "message": "…" }` with 400 (invalid input) · 401 (no/invalid token) · 403 (wrong role) · 404 · 409 (duplicate) · 500.
-
-## Database
-See [`docs/ER-DIAGRAM.md`](docs/ER-DIAGRAM.md).
-
-## Deployment
-See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) (Atlas → Render → Vercel).
-
-## Push to GitHub
-```bash
-git init
-git add .
-git commit -m "StudySphere full-stack project"
-git branch -M main
-git remote add origin https://github.com/<your-username>/studysphere.git
-git push -u origin main
-```
-`.gitignore` already excludes `.env` and `node_modules` – **never commit `.env`**.
-
-## Security notes
-- Public registration always creates **students**; admins are created only with `npm run create-admin`.
-- Password reset is intentionally not implemented (the UI explains this) – an email-only reset would be insecure.
-- If any real credentials were ever committed or shared, rotate them (MongoDB password, `JWT_SECRET`).
+## Project Links
+- GitHub: https://github.com/Archana05271/StudySphere
+- Frontend (Vercel): https://study-sphere-seven-lemon.vercel.app/
+- Backend (Render): https://studysphere-backend-8z2i.onrender.com
