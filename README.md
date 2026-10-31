@@ -293,5 +293,5 @@ Displays:
 
 ## Project Links
 - GitHub: https://github.com/Archana05271/StudySphere
-- Frontend (Vercel): https://study-sphere-seven-lemon.vercel.app/
+- Frontend (Vercel): https://study-sphere-gl2b3rpx0-ci-f8bf.vercel.app
 - Backend (Render): https://studysphere-backend-8z2i.onrender.com
