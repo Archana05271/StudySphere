@@ -41,7 +41,6 @@ export async function register(userData) {
     throw httpError(409, 'An account with this email already exists');
   }
 
-  // Hash the password before storing it.
   const hashedPassword = await bcrypt.hash(password, 12);
 
   const user = await User.create({
@@ -129,7 +128,6 @@ export async function updateProfile(userId, fields = {}) {
     throw httpError(404, 'User account not found');
   }
 
-  // Only explicitly permitted profile fields are updated.
   user.set(update);
   await user.save();
 
@@ -166,8 +164,43 @@ export async function changePassword(
     throw httpError(401, 'Current password is incorrect');
   }
 
-  // Hash the new password before saving.
   user.password = await bcrypt.hash(newPassword, 12);
-
   await user.save();
+}
+
+// Reset student password using the registered email.
+export async function resetStudentPassword(email, newPassword) {
+  const normalizedEmail =
+    typeof email === 'string' ? email.trim().toLowerCase() : '';
+
+  if (!normalizedEmail || typeof newPassword !== 'string') {
+    throw httpError(400, 'Email and new password are required');
+  }
+
+  if (
+    newPassword.length < 8 ||
+    Buffer.byteLength(newPassword, 'utf8') > 72
+  ) {
+    throw httpError(
+      400,
+      'Password must be at least 8 characters and at most 72 bytes'
+    );
+  }
+
+  const user = await User.findOne({
+    email: normalizedEmail,
+    role: 'student'
+  }).select('+password');
+
+  if (!user) {
+    throw httpError(404, 'Student account not found');
+  }
+
+  user.password = await bcrypt.hash(newPassword, 12);
+  await user.save();
+
+  return {
+    success: true,
+    message: 'Password reset successfully'
+  };
 }

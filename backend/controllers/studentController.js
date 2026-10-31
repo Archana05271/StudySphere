@@ -6,7 +6,7 @@ import Enrollment from '../models/Enrollment.js';
 import LearningProgress from '../models/LearningProgress.js';
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const phonePattern = /^[0-9+()\-\s]{7,15}$/;
+const phonePattern = /^[0-9+()\-\\s]{7,15}$/;
 
 // Get all students.
 export async function getStudents(req, res, next) {
@@ -16,13 +16,13 @@ export async function getStudents(req, res, next) {
       .sort({ createdAt: -1 })
       .lean();
 
-    res.json({
+    return res.json({
       success: true,
       count: students.length,
       students
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 }
 
@@ -50,12 +50,12 @@ export async function getStudentById(req, res, next) {
       });
     }
 
-    res.json({
+    return res.json({
       success: true,
       student
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 }
 
@@ -149,7 +149,7 @@ export async function createStudent(req, res, next) {
       role: 'student'
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       message: 'Student created successfully',
       student: {
@@ -162,7 +162,7 @@ export async function createStudent(req, res, next) {
       }
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 }
 
@@ -272,7 +272,7 @@ export async function updateStudent(req, res, next) {
     student.set(update);
     await student.save();
 
-    res.json({
+    return res.json({
       success: true,
       message: 'Student updated successfully',
       student: {
@@ -286,7 +286,7 @@ export async function updateStudent(req, res, next) {
       }
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 }
 
@@ -302,53 +302,99 @@ export async function deleteStudent(req, res, next) {
       });
     }
 
-    session = await mongoose.startSession();
+    const studentId = req.params.id;
 
-    let studentFound = false;
+    try {
+      // Use a transaction when supported by MongoDB.
+      session = await mongoose.startSession();
 
-    await session.withTransaction(async () => {
-      const student = await User.findOne({
-        _id: req.params.id,
-        role: 'student'
-      })
-        .select('_id')
-        .session(session);
+      const result = await session.withTransaction(async () => {
+        const student = await User.findOne({
+          _id: studentId,
+          role: 'student'
+        })
+          .select('_id')
+          .session(session);
 
-      if (!student) {
-        return;
+        if (!student) {
+          return false;
+        }
+
+        await Enrollment.deleteMany(
+          { student: student._id },
+          { session }
+        );
+
+        await LearningProgress.deleteMany(
+          { student: student._id },
+          { session }
+        );
+
+        await User.deleteOne(
+          { _id: student._id },
+          { session }
+        );
+
+        return true;
+      });
+
+      if (!result) {
+        return res.status(404).json({
+          success: false,
+          message: 'Student not found'
+        });
+      }
+    } catch (error) {
+      // Detect standalone MongoDB transaction errors.
+      const unsupported =
+        error.code === 20 ||
+        error.message?.includes(
+          'Transaction numbers are only allowed on a replica set member or mongos'
+        );
+
+      if (!unsupported) {
+        throw error;
       }
 
-      studentFound = true;
+      // End the unsupported transaction session.
+      if (session) {
+        await session.endSession();
+        session = null;
+      }
 
-      await Enrollment.deleteMany(
-        { student: student._id },
-        { session }
-      );
+      // Find the student before deleting related records.
+      const student = await User.findOne({
+        _id: studentId,
+        role: 'student'
+      }).select('_id');
 
-      await LearningProgress.deleteMany(
-        { student: student._id },
-        { session }
-      );
+      if (!student) {
+        return res.status(404).json({
+          success: false,
+          message: 'Student not found'
+        });
+      }
 
-      await User.deleteOne(
-        { _id: student._id },
-        { session }
-      );
-    });
+      // Fallback for standalone MongoDB.
+      await Enrollment.deleteMany({
+        student: student._id
+      });
 
-    if (!studentFound) {
-      return res.status(404).json({
-        success: false,
-        message: 'Student not found'
+      await LearningProgress.deleteMany({
+        student: student._id
+      });
+
+      await User.deleteOne({
+        _id: student._id
       });
     }
 
-    res.json({
+    return res.json({
       success: true,
       message: 'Student deleted successfully'
     });
   } catch (error) {
-    next(error);
+    return next(error);
   } finally {
     if (session) {
       await session.endSession();
